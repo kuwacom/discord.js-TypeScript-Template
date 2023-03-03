@@ -9,6 +9,6 @@ export const executeMessage = async (message: Discord.Message) => {
     // messageCommand
 }
 
-export const executeInteraction = async (interaction: Discord.Interaction) => {
+export const executeInteraction = async (interaction: Discord.CommandInteraction) => {
     // interactionCommand
 }
