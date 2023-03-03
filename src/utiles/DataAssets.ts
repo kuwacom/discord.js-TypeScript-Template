@@ -14,5 +14,5 @@ export interface command {
         ]
     },
     executeMessage(message: Discord.Message): void
-    executeInteraction(interaction: Discord.Interaction): void
+    executeInteraction(interaction: Discord.CommandInteraction): void
 }
