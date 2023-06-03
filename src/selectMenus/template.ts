@@ -3,13 +3,13 @@ import { sleep } from "../modules/utiles";
 import * as Types from "../modules/types";
 import Discord from "discord.js";
 
-export const button = {
+export const selectMenu = {
     customId: ["idone", "idsecond"]
 }
 
-export const executeButton = async (interaction: Types.DiscordButtonInteraction) => {
+export const executeInteraction = async (interaction: Types.DiscordSelectMenuInteraction) => {
     /**
-     *  -- buttonの設定方法 --
+     *  -- selectMenuの設定方法 --
      * 
      * cmd: コマンド名
      * values: 値(array)
@@ -19,6 +19,7 @@ export const executeButton = async (interaction: Types.DiscordButtonInteraction)
      * のように設定していく
      */
     const [cmd, ...values] = interaction.customId.split(":");
-
+    console.log(interaction.values)
+    
     return;
 }

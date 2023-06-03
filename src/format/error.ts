@@ -1,4 +1,4 @@
-import { logger, config, client } from "../index";
+import { logger, config, client } from "../bot";
 import * as Types from "../modules/types";
 import Discord from "discord.js";
 

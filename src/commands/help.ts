@@ -1,4 +1,4 @@
-import { logger, config, client } from "../index";
+import { logger, config, client } from "../bot";
 import { sleep, slashCommands } from "../modules/utiles";
 import * as Types from "../modules/types";
 import Discord from "discord.js";
@@ -49,8 +49,8 @@ export const executeMessage = async (message: Discord.Message) => {
     return;
 }
 
-export const executeInteraction = async (interaction: Discord.CommandInteraction) => {
-    if (!interaction.guild || !interaction.channel || !interaction.member || !interaction.isChatInputCommand()) return;
+export const executeInteraction = async (interaction: Types.DiscordCommandInteraction) => {
+    if (!interaction.guild || !interaction.channel || !interaction.member) return;
     
     const baseFields: Discord.APIEmbedField[] = [];
     slashCommands.forEach((command) => {

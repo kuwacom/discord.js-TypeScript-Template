@@ -3,13 +3,13 @@ import { sleep } from "../modules/utiles";
 import * as Types from "../modules/types";
 import Discord from "discord.js";
 
-export const button = {
+export const modal = {
     customId: ["idone", "idsecond"]
 }
 
-export const executeButton = async (interaction: Types.DiscordButtonInteraction) => {
+export const executeInteraction = async (interaction: Types.DiscordModalSubmitInteraction) => {
     /**
-     *  -- buttonの設定方法 --
+     *  -- modalの設定方法 --
      * 
      * cmd: コマンド名
      * values: 値(array)

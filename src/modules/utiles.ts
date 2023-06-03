@@ -1,15 +1,17 @@
 import * as Types from "./types";
-import * as Discord from "discord.js";
+import Discord from "discord.js";
 
 export const slashCommands: Types.SlashCommand[] = [];
 export const commands: { [commandName: string]: Types.Command } = {};
 export const buttons: Types.Button[] = [];
+export const selectMenus: Types.SelectMenu[] = [];
+export const modals: Types.Modal[] = [];
 
 export const sleep = (msec: number) => new Promise(resolve => setTimeout(resolve, msec));
 
-export const autoDeleteMessage = async (message: Discord.Message) => {
+export const autoDeleteMessage = async (message: Discord.Message, msec: number = 10000) => {
     if (!message.guild) return;
-    await sleep(10000);
+    await sleep(msec);
     message.delete();
 }
 

@@ -1,4 +1,4 @@
-import { logger, config, client } from "../index";
+import { logger, config, client } from "../bot";
 import { autoDeleteMessage, sec2HHMMSS, sleep, slashCommands } from "../modules/utiles";
 import * as Types from "../modules/types";
 import * as FormatERROR from "../format/error";
@@ -9,7 +9,7 @@ export const button = {
     customId: ["helpNext", "helpBack"]
 }
 
-export const executeButton = async (interaction: Discord.ButtonInteraction) => {
+export const executeInteraction = async (interaction: Types.DiscordButtonInteraction) => {
     const [cmd, ...values] = interaction.customId.split(":");
     const guild = interaction.guild;
     if (!guild || !interaction.member) return;
