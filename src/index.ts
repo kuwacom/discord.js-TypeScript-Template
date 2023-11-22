@@ -2,8 +2,8 @@ import Discord from "discord.js";
 import config from "../config.json";
 
 import { Logger } from "tslog"
-
 const logger = new Logger();
+
 // npm test 等一番上のディレクトリで実行する際
 // ./dist/ になるためcommands に dist を追加する必要あり
 const TSDistPath = "./dist"
