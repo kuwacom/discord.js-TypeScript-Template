@@ -2,13 +2,11 @@ import Discord from "discord.js";
 // @ts-ignore
 import config from "../config.json";
 import fs from "fs";
-import { autoDeleteMessage, slashCommands, commands, buttons, selectMenus, modals, sleep, sec2HHMMSS, randRange } from "./modules/utiles"
-import { Logger } from 'tslog'
+import { autoDeleteMessage, slashCommands, commands, buttons, selectMenus, modals, sleep, sec2HHMMSS, randRange } from "./modules/utiles";
 import * as Types from "./modules/types";
 import * as FormatERROR from "./format/error";
 import client from "./discord";
-
-const logger = new Logger();
+import logger from "./utils/logger";
 
 // エラーハンドリング
 process.on("uncaughtException", (err) => {
@@ -55,8 +53,6 @@ const TSDistPath = "./dist";
         modals.push(modal);
     }    
 })();
-
-export { logger, config, client }; // bot.ts の変数共有用
 
 async function debugGlobal() { // デバッグ用の変数
     setInterval(() => {
