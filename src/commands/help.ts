@@ -1,10 +1,10 @@
-import { logger, config, client } from "../bot";
-import { sleep, slashCommands } from "../modules/utiles";
-import * as Types from "../modules/types";
 import Discord from "discord.js";
 
-import * as FormatERROR from "../format/error";
-import * as FormatButton from "../format/button";
+import { commandsConfig, embedConfig } from "../configs/discord";
+import env from "../configs/env";
+import { DiscordCommandInteraction } from "../types/discord";
+import { slashCommands } from "../utils/discord";
+import ButtonFormat from "../format/button";
 
 export const command = {
     name: "help",
@@ -20,9 +20,9 @@ export const executeMessage = async (message: Discord.Message) => {
     const fields: Discord.APIEmbedField[] = [];
 
     slashCommands.forEach((command) => {
-        if (command.name in config.commands) {
+        if (command.name in commandsConfig) {
             fields.push({
-                name: `${config.prefix}${command.name}`,
+                name: `${env.bot.prefix}${command.name}`,
                 value: command.description,
                 inline: true
             })
@@ -32,16 +32,16 @@ export const executeMessage = async (message: Discord.Message) => {
     message.delete();
     
     const button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>()
-        .addComponents(FormatButton.ToHelp(0)) // スラコマ表示用ボタン
+        .addComponents(ButtonFormat.ToHelp(0)) // スラコマ表示用ボタン
 
     const embeds = [
         new Discord.EmbedBuilder()
-            .setColor(Types.embedCollar.info)
+            .setColor(embedConfig.colors.info)
             .setTitle("-- TEXT COMMAND HELP --")
             .setDescription("テキストコマンド一覧")
             .setFields(fields)
             .setFooter({ iconURL: message.author.avatarURL() as string, text: `${message.author.username}#${message.author.discriminator}\n` +
-                config.embed.footerText 
+                embedConfig.footerText 
             })
     ];
 
@@ -49,7 +49,7 @@ export const executeMessage = async (message: Discord.Message) => {
     return;
 }
 
-export const executeInteraction = async (interaction: Types.DiscordCommandInteraction) => {
+export const executeInteraction = async (interaction: DiscordCommandInteraction) => {
     if (!interaction.guild || !interaction.channel || !interaction.member) return;
     
     const baseFields: Discord.APIEmbedField[] = [];
@@ -100,12 +100,12 @@ export const executeInteraction = async (interaction: Types.DiscordCommandIntera
     const betweenFields = baseFields.slice(0, pageSlice);
 
     let button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>()
-        .addComponents(FormatButton.HelpBack(0, true))
-        .addComponents(FormatButton.HelpNext(1));
+        .addComponents(ButtonFormat.HelpBack(0, true))
+        .addComponents(ButtonFormat.HelpNext(1));
 
     const embeds = [
         new Discord.EmbedBuilder()
-            .setColor(Types.embedCollar.info)
+            .setColor(embedConfig.colors.info)
             .setTitle(`-- SLASH COMMAND HELP - 1/${Math.ceil(baseFields.length / pageSlice)} --`)
             .setDescription("スラッシュコマンド一覧")
             .setDescription(
@@ -113,7 +113,7 @@ export const executeInteraction = async (interaction: Types.DiscordCommandIntera
             )
             .setFields(betweenFields)
             .setFooter({ iconURL: interaction.user.avatarURL() as string, text: `${interaction.user.username}#${interaction.user.discriminator}\n` +
-            config.embed.footerText 
+            embedConfig.footerText 
         })
     ];
     interaction.reply({ embeds: embeds, components: [ button ], allowedMentions: { repliedUser: false } });

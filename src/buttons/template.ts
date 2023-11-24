@@ -1,13 +1,9 @@
-import { logger, config, client } from "../bot";
-import { sleep } from "../modules/utiles";
-import * as Types from "../modules/types";
-import Discord from "discord.js";
-
+import { DiscordButtonInteraction } from "../types/discord";
 export const button = {
     customId: ["idone", "idsecond"]
 }
 
-export const executeButton = async (interaction: Types.DiscordButtonInteraction) => {
+export const executeButton = async (interaction: DiscordButtonInteraction) => {
     /**
      *  -- buttonの設定方法 --
      * 

@@ -1,13 +1,4 @@
 import Discord from "discord.js";
-import DiscordVoice from "@discordjs/voice";
-import { config } from "../bot";
-
-export const embedCollar = {
-    info: config.embed.colors.info as Discord.ColorResolvable,
-    success: config.embed.colors.success as Discord.ColorResolvable,
-    warning: config.embed.colors.warning as Discord.ColorResolvable,
-    error: config.embed.colors.error as Discord.ColorResolvable,
-}
 
 interface SlashCommandOption {
     name: string;
@@ -24,6 +15,7 @@ export interface SlashCommand {
 }
 
 export type DiscordCommandInteraction = Discord.ChatInputCommandInteraction<Discord.CacheType> | Discord.MessageContextMenuCommandInteraction<Discord.CacheType> | Discord.UserContextMenuCommandInteraction<Discord.CacheType>;
+
 export interface Command {
     command: SlashCommand;
     executeMessage(message: Discord.Message): void;

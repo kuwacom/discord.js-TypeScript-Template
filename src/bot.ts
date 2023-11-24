@@ -1,12 +1,12 @@
 import Discord from "discord.js";
-// @ts-ignore
-import config from "../config.json";
 import fs from "fs";
-import { autoDeleteMessage, slashCommands, commands, buttons, selectMenus, modals, sleep, sec2HHMMSS, randRange } from "./modules/utiles";
-import * as Types from "./modules/types";
-import * as FormatERROR from "./format/error";
+import { sleep, sec2HHMMSS, randRange } from "./utils/utiles";
 import client from "./discord";
 import logger from "./utils/logger";
+import { Button, Command, Modal, SelectMenu } from "./types/discord";
+import env from "./configs/env";
+import { autoDeleteMessage, buttons, commands, modals, selectMenus, slashCommands } from "./utils/discord";
+import ErrorFormat from "./format/error";
 
 // エラーハンドリング
 process.on("uncaughtException", (err) => {
@@ -20,7 +20,7 @@ const TSDistPath = "./dist";
     logger.info("Loading Commands...");
     const commandFiles = fs.readdirSync(TSDistPath+'/commands').filter(file => file.endsWith('.js'))
     for (const file of commandFiles) {
-        const command: Types.Command = require(`./commands/${file}`);
+        const command: Command = require(`./commands/${file}`);
         logger.info(`import Command: ${command.command.name}`);
         commands[command.command.name] = command;
         slashCommands.unshift(command.command)
@@ -30,7 +30,7 @@ const TSDistPath = "./dist";
     logger.info("Loading Interaction Buttons...");
     const buttonFiles = fs.readdirSync(TSDistPath+'/buttons').filter(file => file.endsWith('.js'))
     for (const file of buttonFiles) {
-        const button: Types.Button = require(`./buttons/${file}`);
+        const button: Button = require(`./buttons/${file}`);
         logger.info(`import Button: ${button.button.customId}`);
         buttons.push(button);
     }    
@@ -39,7 +39,7 @@ const TSDistPath = "./dist";
     logger.info("Loading Interaction SelectMenus...");
     const selectMenuFiles = fs.readdirSync(TSDistPath+'/selectMenus').filter(file => file.endsWith('.js'))
     for (const file of selectMenuFiles) {
-        const selectMenu: Types.SelectMenu = require(`./selectMenus/${file}`);
+        const selectMenu: SelectMenu = require(`./selectMenus/${file}`);
         logger.info(`import SelectMenu: ${selectMenu.selectMenu.customId}`);
         selectMenus.push(selectMenu);
     }    
@@ -48,7 +48,7 @@ const TSDistPath = "./dist";
     logger.info("Loading Interaction Modals...");
     const modalFiles = fs.readdirSync(TSDistPath+'/modals').filter(file => file.endsWith('.js'))
     for (const file of modalFiles) {
-        const modal: Types.Modal = require(`./modals/${file}`);
+        const modal: Modal = require(`./modals/${file}`);
         logger.info(`import Modal: ${modal.modal.customId}`);
         modals.push(modal);
     }    
@@ -111,8 +111,8 @@ client.once("ready", async () => {
 });
 
 client.on("messageCreate", async (message) => {
-    if (message.author.bot || !message.member || !message.guild || !message.content.split(" ")[0].startsWith(config.prefix)) return;
-    const [cmd, ...args] = message.content.slice(config.prefix.length).replace("　", " ").split(" ").filter(v => v != "");
+    if (message.author.bot || !message.member || !message.guild || !message.content.split(" ")[0].startsWith(env.bot.prefix)) return;
+    const [cmd, ...args] = message.content.slice(env.bot.prefix.length).replace("　", " ").split(" ").filter(v => v != "");
 
     // Object.keys(commands).forEach((commandName) => {
     //     //@ts-ignore
@@ -127,7 +127,7 @@ client.on("messageCreate", async (message) => {
         return;
     };
 
-    autoDeleteMessage(await message.reply(FormatERROR.message.NotfoundCommand));
+    autoDeleteMessage(await message.reply(ErrorFormat.message.NotfoundCommand));
     return;
 });
 
@@ -164,4 +164,4 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
-client.login(config.token);
+client.login(env.bot.token);

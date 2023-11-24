@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import Discord from "discord.js";
-import config from "../config.json";
 
 import { Logger } from "tslog"
 const logger = new Logger();
@@ -12,7 +12,7 @@ const TSDistPath = "./dist"
 // https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/understanding/sharding.md
 const manager = new Discord.ShardingManager(TSDistPath + "/bot.js", {
     totalShards: "auto", // サーバー数に合わせて数字でもOK
-    token: config.token
+    token: process.env.BOT_TOKEN
 });
 
 manager.on('shardCreate', (shard: Discord.Shard) => {
