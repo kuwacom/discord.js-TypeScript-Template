@@ -7,6 +7,7 @@ import { Button, Command, Modal, SelectMenu } from "./types/discord";
 import env from "./configs/env";
 import { autoDeleteMessage, buttons, commands, modals, selectMenus, slashCommands } from "./utils/discord";
 import ErrorFormat from "./format/error";
+import { commandsConfig } from "./configs/discord";
 
 // エラーハンドリング
 process.on("uncaughtException", (err) => {
@@ -107,7 +108,7 @@ client.on("ready", async() => {
 client.once("ready", async () => {
     debugGlobal();
     statusTask();
-    // setSlashCommand();
+    setSlashCommand();
 });
 
 client.on("messageCreate", async (message) => {
@@ -121,8 +122,7 @@ client.on("messageCreate", async (message) => {
     // });
     
     for(const commandName of Object.keys(commands)) {
-        //@ts-ignore
-        if (!(cmd == commandName || config.commands[commandName]?.includes(cmd))) continue;
+        if (!(cmd == commandName || (commandsConfig as any)[commandName]?.includes(cmd))) continue;
         commands[commandName].executeMessage(message);
         return;
     };

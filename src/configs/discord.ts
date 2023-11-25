@@ -7,7 +7,7 @@ export const BOTVersion = "3.0"
 export const TSDistPath = "./dist";
 
 export const commandsConfig = {
-    help:["help", "H"]
+    help:["help", "h"]
 }
 
 export const slashCommandsConfig = {
