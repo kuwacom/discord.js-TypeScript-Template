@@ -1,4 +1,8 @@
-if [ -e ./node_modules ]; then
-  npm i
+if [ -z "$1" ]; then
+    target="djs-ts-template"
+else
+    target="$1"
 fi
-npm start
+
+echo will be start $target ....
+screen -T xterm-256color -dmS $target sh run.sh
