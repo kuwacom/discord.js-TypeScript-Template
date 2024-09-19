@@ -1,5 +1,8 @@
 import Discord from "discord.js";
 
+// Statusをスマホアイコンにする
+// (Discord.DefaultWebSocketManagerOptions.identifyProperties.browser as any) = "Discord iOS"
+
 const client = new Discord.Client({
     intents: [
         Discord.GatewayIntentBits.Guilds,
@@ -10,7 +13,6 @@ const client = new Discord.Client({
         Discord.GatewayIntentBits.DirectMessageReactions,
         Discord.GatewayIntentBits.GuildEmojisAndStickers
     ],
-    // ws: { properties: { browser: "Discord iOS" } } 
 });
 
 export default client;
