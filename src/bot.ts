@@ -5,7 +5,7 @@ import client from "./discord";
 import logger from "./utils/logger";
 import { Button, Command, Modal, SelectMenu } from "./types/discord";
 import env from "./configs/env";
-import { autoDeleteMessage, buttons, commands, modals, selectMenus, slashCommands } from "./utils/discord";
+import { autoDeleteMessage, buttons, commands, getShardId, modals, selectMenus, slashCommands } from "./utils/discord";
 import ErrorFormat from "./format/error";
 import { commandsConfig } from "./configs/discord";
 
@@ -63,6 +63,8 @@ async function debugGlobal() { // デバッグ用の変数
             // @ts-ignore
             allMemoryLog.push(`${key}: ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`)
         }
+        logger.debug(`\n-=-=-=-=-=-=-=-= Shard Id - ${getShardId()} -=-=-=-=-=-=-=-=\n` +
+        allMemoryLog.join(' : ') + '\n');
     }, 5000); // 五秒ごとに確認
 }
 
