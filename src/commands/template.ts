@@ -1,10 +1,9 @@
-import Discord from "discord.js";
+import Discord, { SlashCommandBuilder } from "discord.js";
 import { DiscordCommandInteraction } from "../types/discord";
 
-export const command = {
-    name: "template",
-    description: "テンプレート"
-}
+export const command = new SlashCommandBuilder()
+    .setName("template")
+    .setDescription("テンプレート")
 
 
 export const executeMessage = async (message: Discord.Message) => {

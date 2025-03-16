@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord, { SlashCommandBuilder } from "discord.js";
 
 import { commandsConfig, embedConfig } from "../configs/discord";
 import env from "../configs/env";
@@ -6,10 +6,9 @@ import { DiscordCommandInteraction } from "../types/discord";
 import { slashCommands } from "../utils/discord";
 import ButtonFormat from "../format/button";
 
-export const command = {
-    name: "help",
-    description: "コマンドの一覧と使い方を表示します"
-}
+export const command = new SlashCommandBuilder()
+    .setName("help")
+    .setDescription("コマンドの一覧と使い方を表示します")
 
 
 export const executeMessage = async (message: Discord.Message) => {
@@ -59,7 +58,7 @@ export const executeInteraction = async (interaction: DiscordCommandInteraction)
     const baseFields: Discord.APIEmbedField[] = [];
     slashCommands.forEach((command) => {
         if (command.options) {
-            if (command.options[0].type == 1 || command.options[0].type == 2) { // サブコマンドかサブコマンドグループ以外は普通にコマンド
+            if (command.options[0]?.type == 1 || command.options[0]?.type == 2) { // サブコマンドかサブコマンドグループ以外は普通にコマンド
                 command.options.forEach((option) => {
                     if (option.options) {
                         if (option.options[0].type == 1 || option.options[0].type == 2) {
