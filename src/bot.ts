@@ -14,7 +14,7 @@ import {
   selectMenus,
   slashCommands,
 } from './utils/discord';
-import ErrorFormat from './format/error';
+import FormatError from './format/error';
 import { commandsConfig } from './configs/discord';
 
 // エラーハンドリング
@@ -184,7 +184,7 @@ client.on('messageCreate', async (message) => {
     return;
   }
 
-  autoDeleteMessage(await message.reply(ErrorFormat.message.NotfoundCommand));
+  autoDeleteMessage(await message.reply(FormatError.message.NotfoundCommand));
   return;
 });
 

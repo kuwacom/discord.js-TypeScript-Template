@@ -4,7 +4,7 @@ import { commandsConfig, embedConfig } from '../configs/discord';
 import env from '../configs/env';
 import { DiscordCommandInteraction } from '../types/discord';
 import { slashCommands } from '../utils/discord';
-import ButtonFormat from '../format/button';
+import FormatButton from '../format/button';
 
 export const command = new SlashCommandBuilder()
   .setName('help')
@@ -36,7 +36,7 @@ export const executeMessage = async (message: Discord.Message) => {
 
   const button =
     new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
-      ButtonFormat.ToHelp(0)
+      FormatButton.ToHelp(0)
     ); // スラコマ表示用ボタン
 
   const embeds = [
@@ -113,14 +113,14 @@ export const executeInteraction = async (
   const betweenFields = baseFields.slice(0, pageSlice);
 
   let button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>()
-    .addComponents(ButtonFormat.HelpBack(0, true))
-    .addComponents(ButtonFormat.HelpNext(1));
+    .addComponents(FormatButton.HelpBack(0, true))
+    .addComponents(FormatButton.HelpNext(1));
 
   if (baseFields.length <= pageSlice) {
     // コマンドが最低表示数以下の場合はページング無効化
     button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>()
-      .addComponents(ButtonFormat.HelpBack(0, true))
-      .addComponents(ButtonFormat.HelpNext(1, true));
+      .addComponents(FormatButton.HelpBack(0, true))
+      .addComponents(FormatButton.HelpNext(1, true));
   }
 
   const embeds = [

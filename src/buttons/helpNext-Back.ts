@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 import { DiscordButtonInteraction } from '../types/discord';
 import { slashCommands } from '../utils/discord';
 import { embedConfig } from '../configs/discord';
-import ButtonFormat from '../format/button';
+import FormatButton from '../format/button';
 
 export const button = {
   customId: ['helpNext', 'helpBack'],
@@ -71,19 +71,19 @@ export const executeInteraction = async (
   let button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>();
   if (Number(values[0]) == 0) {
     button
-      .addComponents(ButtonFormat.HelpBack(0, true))
-      .addComponents(ButtonFormat.HelpNext(Number(values[0]) + 1));
+      .addComponents(FormatButton.HelpBack(0, true))
+      .addComponents(FormatButton.HelpNext(Number(values[0]) + 1));
   } else if (
     Number(values[0]) ==
     Math.ceil(baseFields.length / pageSlice) - 1
   ) {
     button
-      .addComponents(ButtonFormat.HelpBack(Number(values[0]) - 1))
-      .addComponents(ButtonFormat.HelpNext(0, true));
+      .addComponents(FormatButton.HelpBack(Number(values[0]) - 1))
+      .addComponents(FormatButton.HelpNext(0, true));
   } else {
     button
-      .addComponents(ButtonFormat.HelpBack(Number(values[0]) - 1))
-      .addComponents(ButtonFormat.HelpNext(Number(values[0]) + 1));
+      .addComponents(FormatButton.HelpBack(Number(values[0]) - 1))
+      .addComponents(FormatButton.HelpNext(Number(values[0]) + 1));
   }
 
   const embeds = [

@@ -1,6 +1,6 @@
 import Discord from 'discord.js';
 
-namespace ButtonFormat {
+namespace FormatButton {
   // ヘルプパネル
   export const ToHelp = (
     num: number = 0,
@@ -45,4 +45,4 @@ namespace ButtonFormat {
   };
 }
 
-export default ButtonFormat;
+export default FormatButton;

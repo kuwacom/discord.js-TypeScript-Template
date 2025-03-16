@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 import emoji from '../configs/emoji';
 import { embedConfig } from '../configs/discord';
 
-namespace ErrorFormat {
+namespace FormatError {
   // interaction
   export const interaction = {
     // template一個目のエラー
@@ -77,4 +77,4 @@ namespace ErrorFormat {
     } as Discord.MessageReplyOptions,
   };
 }
-export default ErrorFormat;
+export default FormatError;
