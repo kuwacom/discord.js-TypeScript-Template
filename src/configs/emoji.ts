@@ -1,9 +1,9 @@
 export default {
-    info: "",
-    help: "❔",
-    search: "🔍",
-    loading: "⌛",
-    music: "🎶",
-    warning: "⚠️",
-    error: "❌",
-}
+  info: '',
+  help: '❔',
+  search: '🔍',
+  loading: '⌛',
+  music: '🎶',
+  warning: '⚠️',
+  error: '❌',
+};

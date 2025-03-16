@@ -1,34 +1,48 @@
-import Discord from "discord.js";
+import Discord from 'discord.js';
 
 namespace ButtonFormat {
-
-    // ヘルプパネル
-    export const ToHelp = (num: number = 0, disabled: boolean = false): Discord.ButtonBuilder => {
-        return new Discord.ButtonBuilder()
+  // ヘルプパネル
+  export const ToHelp = (
+    num: number = 0,
+    disabled: boolean = false
+  ): Discord.ButtonBuilder => {
+    return (
+      new Discord.ButtonBuilder()
         .setCustomId(`helpBack:${num}`)
-        .setLabel("/ スラッシュコマンドのヘルプはこちら")
+        .setLabel('/ スラッシュコマンドのヘルプはこちら')
         // .setEmoji()
         .setStyle(Discord.ButtonStyle.Success)
         .setDisabled(disabled)
-    }
+    );
+  };
 
-    export const HelpBack = (num: number = 0, disabled: boolean = false): Discord.ButtonBuilder => {
-        return new Discord.ButtonBuilder()
+  export const HelpBack = (
+    num: number = 0,
+    disabled: boolean = false
+  ): Discord.ButtonBuilder => {
+    return (
+      new Discord.ButtonBuilder()
         .setCustomId(`helpBack:${num}`)
-        .setLabel("<-")
+        .setLabel('<-')
         // .setEmoji()
         .setStyle(Discord.ButtonStyle.Secondary)
         .setDisabled(disabled)
-    }
+    );
+  };
 
-    export const HelpNext = (num: number = 0, disabled: boolean = false): Discord.ButtonBuilder => {
-        return new Discord.ButtonBuilder()
+  export const HelpNext = (
+    num: number = 0,
+    disabled: boolean = false
+  ): Discord.ButtonBuilder => {
+    return (
+      new Discord.ButtonBuilder()
         .setCustomId(`helpNext:${num}`)
-        .setLabel("->")
+        .setLabel('->')
         // .setEmoji()
         .setStyle(Discord.ButtonStyle.Secondary)
         .setDisabled(disabled)
-    }
+    );
+  };
 }
 
 export default ButtonFormat;
