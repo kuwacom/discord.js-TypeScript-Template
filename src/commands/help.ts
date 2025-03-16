@@ -15,7 +15,11 @@ export const command = {
 export const executeMessage = async (message: Discord.Message) => {
     if (!message.guild) return;
     if (!message.member) return;
-    if (message.channel.type == Discord.ChannelType.GuildStageVoice) return; // なんかv14からステージチャンネルからだとsendできないからこれ
+    console.log(message.channel.type);
+    if (
+        message.channel.type != Discord.ChannelType.GuildText &&
+        message.channel.type != Discord.ChannelType.GuildVoice
+    ) return; // なんかv14からステージチャンネルからだとsendできないからこれ
     
     const fields: Discord.APIEmbedField[] = [];
 
