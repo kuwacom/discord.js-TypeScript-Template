@@ -1,10 +1,10 @@
 import Discord, { SlashCommandBuilder } from 'discord.js';
 
-import { commandsConfig, embedConfig } from '../configs/discord';
-import env from '../configs/env';
-import { DiscordCommandInteraction } from '../types/discord';
-import { slashCommands } from '../utils/discord';
-import FormatButton from '../format/button';
+import { commandsConfig, embedConfig } from '@configs/discord';
+import env from '@configs/env';
+import { DiscordCommandInteraction } from '@app-types/discord';
+import { slashCommands } from '@utils/discord';
+import FormatButton from '@format/button';
 
 export const command = new SlashCommandBuilder()
   .setName('help')

@@ -1,8 +1,8 @@
 import Discord from 'discord.js';
-import { DiscordButtonInteraction } from '../types/discord';
-import { slashCommands } from '../utils/discord';
-import { embedConfig } from '../configs/discord';
-import FormatButton from '../format/button';
+import { DiscordButtonInteraction } from '@app-types/discord';
+import { slashCommands } from '@utils/discord';
+import { embedConfig } from '@configs/discord';
+import FormatButton from '@format/button';
 
 export const button = {
   customId: ['helpNext', 'helpBack'],

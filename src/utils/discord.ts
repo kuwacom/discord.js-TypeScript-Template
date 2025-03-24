@@ -5,10 +5,24 @@ import {
   Modal,
   SelectMenu,
   SlashCommand,
-} from '../types/discord';
+} from '@app-types/discord';
 
 import { sleep } from './utiles';
-import client from '../discord';
+
+// Statusをスマホアイコンにする
+// (Discord.DefaultWebSocketManagerOptions.identifyProperties.browser as any) = "Discord iOS"
+
+export const client = new Discord.Client({
+  intents: [
+    Discord.GatewayIntentBits.Guilds,
+    Discord.GatewayIntentBits.GuildMessages,
+    Discord.GatewayIntentBits.MessageContent,
+    Discord.GatewayIntentBits.GuildVoiceStates,
+    Discord.GatewayIntentBits.GuildMessageReactions,
+    Discord.GatewayIntentBits.DirectMessageReactions,
+    Discord.GatewayIntentBits.GuildEmojisAndStickers,
+  ],
+});
 
 export const slashCommands: SlashCommand[] = [];
 export const commands: { [commandName: string]: Command } = {};

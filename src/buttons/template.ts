@@ -1,4 +1,4 @@
-import { DiscordButtonInteraction } from '../types/discord';
+import { DiscordButtonInteraction } from '@app-types/discord';
 export const button = {
   customId: ['idone', 'idsecond'],
 };

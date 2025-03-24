@@ -1,13 +1,13 @@
 {
   "name": "discord.js-typescript-template",
-  "version": "3.0",
+  "version": "4.0.0",
   "author": "kuwacom",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "wintest": "title %npm_config_id% && tsc && node ./dist/index.js",
-    "test": "tsc && node ./dist/index.js",
-    "build": "tsc",
+    "wintest": "title %npm_config_id% && tsc && tsc-alias && node ./dist/index.js",
+    "test": "tsc && tsc-alias && node ./dist/index.js",
+    "build": "tsc && tsc-alias",
     "winstart": "title %npm_config_id% && node ./dist/index.js",
     "start": "node ./dist/index.js"
   },

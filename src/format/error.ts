@@ -1,6 +1,6 @@
 import Discord from 'discord.js';
-import emoji from '../configs/emoji';
-import { embedConfig } from '../configs/discord';
+import emoji from '@configs/emoji';
+import { embedConfig } from '@configs/discord';
 
 namespace FormatError {
   // interaction

@@ -1,5 +1,5 @@
 import Discord, { SlashCommandBuilder } from 'discord.js';
-import { DiscordCommandInteraction } from '../types/discord';
+import { DiscordCommandInteraction } from '@app-types/discord';
 
 export const command = new SlashCommandBuilder()
   .setName('template')

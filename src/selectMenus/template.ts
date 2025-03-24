@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import { DiscordSelectMenuInteraction } from '../types/discord';
+import { DiscordSelectMenuInteraction } from '@app-types/discord';
 
 export const selectMenu = {
   customId: ['idone', 'idsecond'],

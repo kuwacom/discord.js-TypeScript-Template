@@ -1,10 +1,10 @@
 import Discord from 'discord.js';
 import fs from 'fs';
-import { sleep, sec2HHMMSS, randRange } from './utils/utiles';
-import client from './discord';
-import logger from './utils/logger';
-import { Button, Command, Modal, SelectMenu } from './types/discord';
-import env from './configs/env';
+import { sleep, sec2HHMMSS, randRange } from '@utils/utiles';
+import { client } from '@utils/discord';
+import logger from '@utils/logger';
+import { Button, Command, Modal, SelectMenu } from '@app-types/discord';
+import env from '@configs/env';
 import {
   autoDeleteMessage,
   buttons,
@@ -13,9 +13,9 @@ import {
   modals,
   selectMenus,
   slashCommands,
-} from './utils/discord';
-import FormatError from './format/error';
-import { commandsConfig } from './configs/discord';
+} from '@utils/discord';
+import FormatError from '@format/error';
+import { commandsConfig } from '@configs/discord';
 
 // エラーハンドリング
 process.on('uncaughtException', (err) => {

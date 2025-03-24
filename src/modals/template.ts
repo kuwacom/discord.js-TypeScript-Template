@@ -1,4 +1,4 @@
-import { DiscordModalSubmitInteraction } from '../types/discord';
+import { DiscordModalSubmitInteraction } from '@app-types/discord';
 
 export const modal = {
   customId: ['idone', 'idsecond'],
