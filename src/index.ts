@@ -2,6 +2,7 @@ import 'dotenv/config';
 import Discord from 'discord.js';
 
 import { Logger } from 'tslog';
+import shardSyncAPI from './shardSyncAPI';
 const logger = new Logger();
 
 // npm test 等一番上のディレクトリで実行する際
@@ -18,3 +19,5 @@ manager.on('shardCreate', (shard: Discord.Shard) => {
   logger.info(`Launched shard ${shard.id}`);
 });
 manager.spawn();
+
+if (process.env.SHARD_SYNC_API_LOCALHOST) shardSyncAPI();

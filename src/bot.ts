@@ -16,6 +16,8 @@ import {
 } from '@utils/discord';
 import FormatError from '@format/error';
 import { commandsConfig } from '@configs/discord';
+import { setShardConnectionCount } from './api/setShardConnectionCount';
+import { getShardsConnectionCount } from './api/getShardsConnectionCount';
 
 // エラーハンドリング
 process.on('uncaughtException', (err) => {
@@ -101,6 +103,39 @@ async function debugGlobal() {
 async function statusTask() {
   // client.user?.setStatus("idle");
   while (1) {
+    /////////////////////
+    // シャードでの運用 //
+    /////////////////////
+    // let playServerNum = 0;
+
+    // await setShardConnectionCount(getShardId(), playServerNum);
+    // playServerNum = (await getShardsConnectionCount()) ?? playServerNum;
+
+    // let guildSize; // https://discordjs.guide/sharding/#fetchclientvalues
+    // await client.shard
+    //   ?.fetchClientValues('guilds.cache.size')
+    //   .then((results) => {
+    //     guildSize = results.reduce(
+    //       (acc, guildCount) => (acc as number) + (guildCount as number)
+    //     );
+    //   });
+    // client.user?.setPresence({
+    //   activities: [
+    //     {
+    //       name: `${playServerNum}/${guildSize} サーバー`,
+    //       type: Discord.ActivityType.Competing,
+    //     },
+    //   ],
+    // });
+    // await sleep(10000);
+    // client.user?.setPresence({
+    //   activities: [{ name: `/help`, type: Discord.ActivityType.Listening }],
+    // });
+    // await sleep(1000);
+
+    ////////////////////////
+    // シャードなしでの運用 //
+    ////////////////////////
     let guildSize; // https://discordjs.guide/sharding/#fetchclientvalues
     await client.shard
       ?.fetchClientValues('guilds.cache.size')
