@@ -1,5 +1,5 @@
 import express, { Request, Response, text } from 'express';
-import { connectionCount } from '@shardSyncAPI';
+import { connectionCount } from '@/shardSyncAPI';
 import bodyParser from 'body-parser';
 const shardsRouter = express.Router();
 
