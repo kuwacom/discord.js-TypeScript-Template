@@ -20,4 +20,4 @@ manager.on('shardCreate', (shard: Discord.Shard) => {
 });
 manager.spawn();
 
-if (process.env.SHARD_SYNC_API_LOCALHOST) shardSyncAPI();
+if (process.env.SHARD_SYNC_API_HOST) shardSyncAPI();
