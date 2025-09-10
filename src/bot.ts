@@ -1,6 +1,5 @@
-import { client, initBot } from '@services/discord';
+import { client, initBot, setSlashCommand } from '@services/discord';
 import logger from '@/services/logger';
-import env from '@configs/env';
 import messageCreateHandler from './handlers/messageCreateHandler';
 import interactionCreateHandler from './handlers/interactionCreateHandler';
 import debugMemoryUsageTask from './tasks/debugMemoryUsageTask';
@@ -9,9 +8,9 @@ import { isDev } from './configs/args';
 
 // エラーハンドリング
 if (!isDev) {
-  // process.on('uncaughtException', (err) => {
-  //   logger.error(err.toString());
-  // });
+  process.on('uncaughtException', (err) => {
+    logger.error(err.toString());
+  });
 }
 
 client.on('ready', async () => {
@@ -21,7 +20,7 @@ client.on('ready', async () => {
 client.once('ready', async () => {
   debugMemoryUsageTask();
   discordStatusTask();
-  // setSlashCommand();
+  setSlashCommand();
 });
 
 client.on('messageCreate', messageCreateHandler);
