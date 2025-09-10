@@ -1,12 +1,13 @@
 {
   "name": "discord.js-typescript-template",
-  "version": "4.1.1",
+  "version": "5.0.0",
   "author": "kuwacom",
   "description": "",
   "main": "index.js",
   "scripts": {
     "wintest": "title %npm_config_id% && tsc && tsc-alias && node ./dist/index.js",
     "test": "tsc && tsc-alias && node ./dist/index.js",
+    "dev": "tsc && tsc-alias && node ./dist/index.js --dev",
     "build": "tsc && tsc-alias",
     "winstart": "title %npm_config_id% && node ./dist/index.js",
     "start": "node ./dist/index.js"

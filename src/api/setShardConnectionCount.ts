@@ -1,6 +1,6 @@
 import env from '@configs/env';
 import { ShardConnectionCountReq } from '@models/api/shardConnectionCount';
-import logger from '@utils/logger';
+import logger from '@/services/logger';
 
 export async function setShardConnectionCount(
   shardId: number,
