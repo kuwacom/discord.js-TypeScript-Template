@@ -25,8 +25,7 @@ export interface Command {
   executeInteraction(interaction: DiscordCommandInteraction): void;
 }
 
-export type DiscordButtonInteraction =
-  Discord.ButtonInteraction<Discord.CacheType>;
+export type DiscordButtonInteraction = Discord.ButtonInteraction<Discord.CacheType>;
 export interface Button {
   button: {
     customId: string[];
@@ -34,8 +33,7 @@ export interface Button {
   executeInteraction(interaction: DiscordButtonInteraction): void;
 }
 
-export type DiscordSelectMenuInteraction =
-  Discord.StringSelectMenuInteraction<Discord.CacheType>;
+export type DiscordSelectMenuInteraction = Discord.StringSelectMenuInteraction<Discord.CacheType>;
 export interface SelectMenu {
   selectMenu: {
     customId: string[];
@@ -43,8 +41,7 @@ export interface SelectMenu {
   executeInteraction(interaction: DiscordSelectMenuInteraction): void;
 }
 
-export type DiscordModalSubmitInteraction =
-  Discord.ModalSubmitInteraction<Discord.CacheType>;
+export type DiscordModalSubmitInteraction = Discord.ModalSubmitInteraction<Discord.CacheType>;
 export interface Modal {
   modal: {
     customId: string[];

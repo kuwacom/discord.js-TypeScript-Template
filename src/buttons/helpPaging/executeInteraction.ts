@@ -1,17 +1,10 @@
 import { embedConfig } from '@/configs/discord';
 import { slashCommands } from '@/services/discord';
 import { DiscordButtonInteraction } from '@/types/discord';
-import {
-  ActionRowBuilder,
-  APIEmbedField,
-  ButtonBuilder,
-  EmbedBuilder,
-} from 'discord.js';
+import { ActionRowBuilder, APIEmbedField, ButtonBuilder, EmbedBuilder } from 'discord.js';
 import { HelpBackButton, HelpNextButton } from './builders';
 
-export const executeInteraction = async (
-  interaction: DiscordButtonInteraction
-) => {
+export const executeInteraction = async (interaction: DiscordButtonInteraction) => {
   const [cmd, ...values] = interaction.customId.split(':');
   const guild = interaction.guild;
   if (!guild || !interaction.member) return;
@@ -62,12 +55,11 @@ export const executeInteraction = async (
   const pageSlice = 4; // ページごとに表示する量
   const betweenFields = baseFields.slice(
     Number(values[0]) * pageSlice,
-    Number(values[0]) * pageSlice + pageSlice
+    Number(values[0]) * pageSlice + pageSlice,
   );
 
   // ページ範囲外なら最初のページに戻す
-  if (Number(values[0]) > Math.ceil(baseFields.length / pageSlice) - 1)
-    values[0] = '0';
+  if (Number(values[0]) > Math.ceil(baseFields.length / pageSlice) - 1) values[0] = '0';
 
   const currentPage = Number(values[0]);
   const maxPage = Math.ceil(baseFields.length / pageSlice) - 1;
@@ -76,26 +68,22 @@ export const executeInteraction = async (
   const disableNext = currentPage === maxPage && baseFields.length <= pageSlice;
 
   const button = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      HelpBackButton(disableBack ? 0 : currentPage - 1, disableBack)
-    )
-    .addComponents(
-      HelpNextButton(disableNext ? 0 : currentPage + 1, disableNext)
-    );
+    .addComponents(HelpBackButton(disableBack ? 0 : currentPage - 1, disableBack))
+    .addComponents(HelpNextButton(disableNext ? 0 : currentPage + 1, disableNext));
 
   const embeds = [
     new EmbedBuilder()
       .setColor(embedConfig.colors.info)
       .setTitle(
         `-- SLASH COMMAND HELP - ${Number(values[0]) + 1}/${Math.ceil(
-          baseFields.length / pageSlice
-        )} --`
+          baseFields.length / pageSlice,
+        )} --`,
       )
       .setDescription('スラッシュコマンド一覧')
       .setDescription(
         `**全 ${baseFields.length}個中  ${Number(values[0]) * pageSlice + 1}~${
           Number(values[0]) * pageSlice + pageSlice
-        }個目**`
+        }個目**`,
       )
       .setFields(betweenFields)
       .setFooter({

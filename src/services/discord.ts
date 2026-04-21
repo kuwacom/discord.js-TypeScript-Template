@@ -1,12 +1,6 @@
 import Discord, { Client } from 'discord.js';
 import fs from 'fs';
-import {
-  Button,
-  Command,
-  Modal,
-  SelectMenu,
-  SlashCommand,
-} from '@app-types/discord';
+import { Button, Command, Modal, SelectMenu, SlashCommand } from '@app-types/discord';
 import { sleep } from '@/utils/utiles';
 import logger from './logger';
 import env from '@/configs/env';
@@ -161,14 +155,13 @@ export async function setSlashCommand() {
 
 export const autoDeleteMessage = async (
   message: Discord.Message | Discord.InteractionResponse,
-  msec: number = 10000
+  msec: number = 10000,
 ) => {
   await sleep(msec);
   message.delete();
 };
 
-export const getShardId = () =>
-  Array.from(client.guilds.cache.values())[0].shardId;
+export const getShardId = () => Array.from(client.guilds.cache.values())[0].shardId;
 
 export async function getTotalGuildCount(client: Client): Promise<number> {
   if (!client.shard) return client.guilds.cache.size;

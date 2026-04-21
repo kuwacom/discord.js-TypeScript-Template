@@ -1,6 +1,6 @@
 services:
   discord-bot:
-    image: node:20
+    image: node:22
     container_name: discord-template-bot
     working_dir: /app
     volumes:
@@ -9,5 +9,5 @@ services:
     ports:
       - '3000:3000'
     # 初期設定も含めて実行
-    command: bash -c "npm install -g typescript tsc-alias && npm i && npm run build && npm run start"
+    command: bash -c "npm i && npm run build && npm run start"
     restart: always

@@ -1,8 +1,6 @@
 import { DiscordSelectMenuInteraction } from '@/types/discord';
 
-export const executeInteraction = async (
-  interaction: DiscordSelectMenuInteraction
-) => {
+export const executeInteraction = async (interaction: DiscordSelectMenuInteraction) => {
   /**
    *  -- selectMenuの設定方法 --
    *

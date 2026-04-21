@@ -27,10 +27,9 @@ export async function executeMessage(message: Discord.Message) {
 
   await message.delete().catch(() => {});
 
-  const buttonRow =
-    new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
-      ToHelpButton(0)
-    );
+  const buttonRow = new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
+    ToHelpButton(0),
+  );
 
   const embed = new Discord.EmbedBuilder()
     .setColor(embedConfig.colors.info)

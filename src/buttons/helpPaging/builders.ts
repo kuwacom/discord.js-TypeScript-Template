@@ -1,9 +1,6 @@
 import Discord from 'discord.js';
 
-export const ToHelpButton = (
-  num: number = 0,
-  disabled: boolean = false
-): Discord.ButtonBuilder => {
+export const ToHelpButton = (num: number = 0, disabled: boolean = false): Discord.ButtonBuilder => {
   return (
     new Discord.ButtonBuilder()
       .setCustomId(`helpBack:${num}`)
@@ -16,7 +13,7 @@ export const ToHelpButton = (
 
 export const HelpBackButton = (
   num: number = 0,
-  disabled: boolean = false
+  disabled: boolean = false,
 ): Discord.ButtonBuilder => {
   return (
     new Discord.ButtonBuilder()
@@ -30,7 +27,7 @@ export const HelpBackButton = (
 
 export const HelpNextButton = (
   num: number = 0,
-  disabled: boolean = false
+  disabled: boolean = false,
 ): Discord.ButtonBuilder => {
   return (
     new Discord.ButtonBuilder()

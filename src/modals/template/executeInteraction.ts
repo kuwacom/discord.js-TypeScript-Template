@@ -1,8 +1,6 @@
 import { DiscordModalSubmitInteraction } from '@/types/discord';
 
-export const executeInteraction = async (
-  interaction: DiscordModalSubmitInteraction
-) => {
+export const executeInteraction = async (interaction: DiscordModalSubmitInteraction) => {
   /**
    *  -- modalの設定方法 --
    *

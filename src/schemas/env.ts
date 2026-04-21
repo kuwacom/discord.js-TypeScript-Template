@@ -21,16 +21,13 @@ export const envSchema = z
     TS_DIST_PATH: z.string().optional().default('./dist'),
   })
   .superRefine((value, ctx) => {
-    const shouldHostShardSyncAPI = truthyValues.includes(
-      value.SHARD_SYNC_API_HOST.toLowerCase()
-    );
+    const shouldHostShardSyncAPI = truthyValues.includes(value.SHARD_SYNC_API_HOST.toLowerCase());
 
     if (shouldHostShardSyncAPI && !value.SHARD_SYNC_API_ADDRESSES) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['SHARD_SYNC_API_ADDRESSES'],
-        message:
-          'SHARD_SYNC_API_ADDRESSES is required when SHARD_SYNC_API_HOST is enabled',
+        message: 'SHARD_SYNC_API_ADDRESSES is required when SHARD_SYNC_API_HOST is enabled',
       });
     }
   })
@@ -41,9 +38,7 @@ export const envSchema = z
     },
     shardSyncAPIAddress: value.SHARD_SYNC_API_ADDRESSES,
     shardSyncAPIOrigin: value.SHARD_SYNC_API_ORIGIN,
-    shouldHostShardSyncAPI: truthyValues.includes(
-      value.SHARD_SYNC_API_HOST.toLowerCase()
-    ),
+    shouldHostShardSyncAPI: truthyValues.includes(value.SHARD_SYNC_API_HOST.toLowerCase()),
     tsDistPath: value.TS_DIST_PATH,
   }));
 

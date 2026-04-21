@@ -1,12 +1,10 @@
 import Discord from 'discord.js';
-import { commandsConfig, embedConfig } from '@configs/discord';
+import { embedConfig } from '@configs/discord';
 import { slashCommands } from '@services/discord';
 import { DiscordCommandInteraction } from '@app-types/discord';
 import { HelpBackButton, HelpNextButton } from '@/buttons/helpPaging';
 
-export async function executeInteraction(
-  interaction: DiscordCommandInteraction
-) {
+export async function executeInteraction(interaction: DiscordCommandInteraction) {
   if (!interaction.guild || !interaction.channel || !interaction.member) return;
 
   const baseFields: Discord.APIEmbedField[] = [];
@@ -63,9 +61,7 @@ export async function executeInteraction(
   const embed = new Discord.EmbedBuilder()
     .setColor(embedConfig.colors.info)
     .setTitle(`-- SLASH COMMAND HELP - 1/${pageCount} --`)
-    .setDescription(
-      `**全 ${baseFields.length}個中 1~${currentFields.length} 個目**`
-    )
+    .setDescription(`**全 ${baseFields.length}個中 1~${currentFields.length} 個目**`)
     .setFields(currentFields)
     .setFooter({
       iconURL: interaction.user.avatarURL() ?? undefined,

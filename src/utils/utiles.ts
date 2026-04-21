@@ -1,5 +1,4 @@
-export const sleep = (msec: number) =>
-  new Promise((resolve) => setTimeout(resolve, msec));
+export const sleep = (msec: number) => new Promise((resolve) => setTimeout(resolve, msec));
 
 export const sec2HHMMSS = (secs: number): string => {
   const seconds = parseInt(secs.toString(), 10);

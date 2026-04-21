@@ -4,9 +4,7 @@ import logger from '@/services/logger';
 
 export async function getShardsConnectionCount() {
   try {
-    const res = await fetch(
-      env.shardSyncAPIAddress + '/shards/connectionCount'
-    );
+    const res = await fetch(env.shardSyncAPIAddress + '/shards/connectionCount');
     if (!res.ok) return null;
 
     const data = (await res.json()) as ShardsConnectionCount;

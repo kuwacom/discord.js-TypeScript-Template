@@ -2,9 +2,7 @@ import { buttons, commands, modals, selectMenus } from '@/services/discord';
 import logger from '@/services/logger';
 import { CacheType, Interaction } from 'discord.js';
 
-export default async function interactionCreateHandler(
-  interaction: Interaction<CacheType>
-) {
+export default async function interactionCreateHandler(interaction: Interaction<CacheType>) {
   if (!interaction.guild || !interaction.member) return;
 
   logger.debug(`[DEBUG] Interaction received:`, {
@@ -16,7 +14,11 @@ export default async function interactionCreateHandler(
     commandName: (interaction as any).commandName,
   });
 
-  if (interaction.isCommand()) {
+  if (
+    interaction.isChatInputCommand() ||
+    interaction.isMessageContextMenuCommand() ||
+    interaction.isUserContextMenuCommand()
+  ) {
     // Object.keys(commands).forEach(key => {
     //     console.log(key)
     // })
@@ -27,24 +29,21 @@ export default async function interactionCreateHandler(
     const [cmd, ...values] = interaction.customId.split(':');
 
     buttons.forEach((button) => {
-      if (button.button.customId.includes(cmd))
-        button.executeInteraction(interaction);
+      if (button.button.customId.includes(cmd)) button.executeInteraction(interaction);
     });
     return;
-  } else if (interaction.isSelectMenu()) {
+  } else if (interaction.isStringSelectMenu()) {
     const [cmd, ...values] = interaction.customId.split(':');
 
     selectMenus.forEach((selectMenu) => {
-      if (selectMenu.selectMenu.customId.includes(cmd))
-        selectMenu.executeInteraction(interaction);
+      if (selectMenu.selectMenu.customId.includes(cmd)) selectMenu.executeInteraction(interaction);
     });
     return;
   } else if (interaction.isModalSubmit()) {
     const [cmd, ...values] = interaction.customId.split(':');
 
     modals.forEach((modal) => {
-      if (modal.modal.customId.includes(cmd))
-        modal.executeInteraction(interaction);
+      if (modal.modal.customId.includes(cmd)) modal.executeInteraction(interaction);
     });
     return;
   }

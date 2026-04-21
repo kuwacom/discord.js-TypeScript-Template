@@ -1,8 +1,6 @@
 import { DiscordButtonInteraction } from '@/types/discord';
 
-export const executeInteraction = async (
-  interaction: DiscordButtonInteraction
-) => {
+export const executeInteraction = async (interaction: DiscordButtonInteraction) => {
   /**
    *  -- buttonの設定方法 --
    *

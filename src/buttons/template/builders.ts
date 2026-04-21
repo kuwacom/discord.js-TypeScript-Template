@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 
 export const TemplateButton = (
   num: number = 0,
-  disabled: boolean = false
+  disabled: boolean = false,
 ): Discord.ButtonBuilder => {
   return (
     new Discord.ButtonBuilder()

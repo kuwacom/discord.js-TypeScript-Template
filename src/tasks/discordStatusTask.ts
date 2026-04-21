@@ -17,13 +17,8 @@ export default async function discordStatusTask(intervalMs: number = 60000) {
       playServerNum = (await getShardsConnectionCount()) ?? playServerNum;
 
       // https://discordjs.guide/sharding/#fetchclientvalues
-      const results = (await client.shard.fetchClientValues(
-        'guilds.cache.size'
-      )) as number[];
-      const guildSize = results.reduce(
-        (acc, guildCount) => acc + guildCount,
-        0
-      );
+      const results = (await client.shard.fetchClientValues('guilds.cache.size')) as number[];
+      const guildSize = results.reduce((acc, guildCount) => acc + guildCount, 0);
       client.user?.setPresence({
         activities: [
           {

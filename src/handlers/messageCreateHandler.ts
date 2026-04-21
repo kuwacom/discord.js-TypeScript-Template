@@ -6,7 +6,7 @@ import logger from '@/services/logger';
 import { Message, OmitPartialGroupDMChannel } from 'discord.js';
 
 export default async function messageCreateHandler(
-  message: OmitPartialGroupDMChannel<Message<boolean>>
+  message: OmitPartialGroupDMChannel<Message<boolean>>,
 ) {
   if (
     message.author.bot ||
@@ -17,7 +17,7 @@ export default async function messageCreateHandler(
     return;
 
   logger.debug(
-    `[messageCreateHandler] Received message: "${message.content}" from ${message.author.tag} in guild "${message.guild.name}"`
+    `[messageCreateHandler] Received message: "${message.content}" from ${message.author.tag} in guild "${message.guild.name}"`,
   );
 
   const [cmd, ...args] = message.content
@@ -33,13 +33,7 @@ export default async function messageCreateHandler(
   // });
 
   for (const commandName of Object.keys(commands)) {
-    if (
-      !(
-        cmd == commandName ||
-        (commandsConfig as any)[commandName]?.includes(cmd)
-      )
-    )
-      continue;
+    if (!(cmd == commandName || (commandsConfig as any)[commandName]?.includes(cmd))) continue;
     commands[commandName].executeMessage(message);
     return;
   }
