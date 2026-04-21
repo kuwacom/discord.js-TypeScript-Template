@@ -7,7 +7,7 @@ import { ActivityType } from 'discord.js';
 export default async function discordStatusTask(intervalMs: number = 60000) {
   // client.user?.setStatus("idle");
   while (true) {
-    if (client.shard?.ids.length === 0) {
+    if (client.shard) {
       /////////////////////
       // シャードでの運用 //
       /////////////////////
@@ -16,14 +16,14 @@ export default async function discordStatusTask(intervalMs: number = 60000) {
       await setShardConnectionCount(getShardId(), playServerNum);
       playServerNum = (await getShardsConnectionCount()) ?? playServerNum;
 
-      let guildSize; // https://discordjs.guide/sharding/#fetchclientvalues
-      await client.shard
-        ?.fetchClientValues('guilds.cache.size')
-        .then((results) => {
-          guildSize = results.reduce(
-            (acc, guildCount) => (acc as number) + (guildCount as number)
-          );
-        });
+      // https://discordjs.guide/sharding/#fetchclientvalues
+      const results = (await client.shard.fetchClientValues(
+        'guilds.cache.size'
+      )) as number[];
+      const guildSize = results.reduce(
+        (acc, guildCount) => acc + guildCount,
+        0
+      );
       client.user?.setPresence({
         activities: [
           {
