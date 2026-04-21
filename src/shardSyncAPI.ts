@@ -6,6 +6,7 @@ import { Logger } from 'tslog';
 const logger = new Logger();
 
 import shardsRouter from '@routes/shards';
+import env from '@/configs/env';
 
 const HostPort = (url: string) => {
   const parsedUrl = new URL(url);
@@ -14,10 +15,8 @@ const HostPort = (url: string) => {
 
 export default function shardSyncAPI() {
   const app = express();
-  app.use(cors({ origin: process.env.SHARD_SYNC_API_ORIGIN })); // cors 設定
-  const [appHost, appPort] = HostPort(
-    process.env.SHARD_SYNC_API_ADDRESSES as string
-  );
+  app.use(cors({ origin: env.shardSyncAPIOrigin })); // cors 設定
+  const [appHost, appPort] = HostPort(env.shardSyncAPIAddress);
 
   // restServer
   const mainRouter = express.Router();

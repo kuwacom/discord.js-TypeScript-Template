@@ -26,7 +26,7 @@ export const client = new Discord.Client({
   ],
 });
 
-const TSDistPath = process.env.TS_DIST_PATH ?? './dist';
+const TSDistPath = env.tsDistPath;
 
 export const slashCommands: SlashCommand[] = [];
 export const commands: { [commandName: string]: Command } = {};
