@@ -1,0 +1,168 @@
+openapi: 3.1.0
+info:
+  title: Discord Bot Template Shard Sync API
+  version: 1.0.0
+  description: |
+    オプションのシャード同期 API 向け OpenAPI 定義
+    この API は SHARD_SYNC_API_HOST が有効なときだけ公開されます
+
+servers:
+  - url: http://localhost:3000/v1
+    description: ローカル開発サーバー
+
+tags:
+  - name: Shards
+    description: シャード接続数の同期用エンドポイント
+
+paths:
+  /shards/connectionCount:
+    get:
+      tags:
+        - Shards
+      summary: シャード接続数の合計を取得
+      description: 登録済みの全シャードにおける接続数の合計を返します
+      operationId: getShardsConnectionCount
+      responses:
+        '200':
+          description: シャード接続数の合計
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShardsConnectionCountResponse'
+              examples:
+                empty:
+                  value:
+                    shardCount: 0
+                    connectionCount: 0
+                populated:
+                  value:
+                    shardCount: 3
+                    connectionCount: 12
+
+  /shards/{shardId}/connectionCount:
+    parameters:
+      - $ref: '#/components/parameters/ShardId'
+    get:
+      tags:
+        - Shards
+      summary: 特定シャードの接続数を取得
+      description: 指定したシャードの接続数を返します
+      operationId: getShardConnectionCount
+      responses:
+        '200':
+          description: 指定シャードの接続数
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShardConnectionCountResponse'
+              examples:
+                found:
+                  value:
+                    shardCount: 3
+                    shardNum: 1
+                    connectionCount: 4
+        '404':
+          description: 指定したシャードが見つかりません
+    post:
+      tags:
+        - Shards
+      summary: 特定シャードの接続数を更新
+      description: 指定したシャードの現在の接続数を保存します
+      operationId: setShardConnectionCount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShardConnectionCountRequest'
+            examples:
+              update:
+                value:
+                  connectionCount: 4
+      responses:
+        '200':
+          description: 接続数の更新に成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                success:
+                  value:
+                    success: true
+                    message: Connection count updated successfully.
+        '400':
+          description: リクエストボディが不正です
+
+components:
+  parameters:
+    ShardId:
+      name: shardId
+      in: path
+      required: true
+      description: シャード識別子
+      schema:
+        type: integer
+        minimum: 0
+      examples:
+        shard0:
+          value: 0
+
+  schemas:
+    ShardsConnectionCountResponse:
+      type: object
+      required:
+        - shardCount
+        - connectionCount
+      properties:
+        shardCount:
+          type: integer
+          minimum: 0
+          description: 登録済みシャード数
+        connectionCount:
+          type: integer
+          minimum: 0
+          description: 全シャードの接続数合計
+
+    ShardConnectionCountResponse:
+      type: object
+      required:
+        - shardCount
+        - shardNum
+        - connectionCount
+      properties:
+        shardCount:
+          type: integer
+          minimum: 0
+          description: 登録済みシャード数
+        shardNum:
+          type: integer
+          minimum: 0
+          description: 取得対象のシャード識別子
+        connectionCount:
+          type: integer
+          minimum: 0
+          description: 対象シャードの接続数
+
+    ShardConnectionCountRequest:
+      type: object
+      required:
+        - connectionCount
+      properties:
+        connectionCount:
+          type: integer
+          minimum: 0
+          description: 対象シャードの現在の接続数
+
+    SuccessResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          description: リクエスト成功フラグ
+        message:
+          type: string
+          description: 処理結果メッセージ
