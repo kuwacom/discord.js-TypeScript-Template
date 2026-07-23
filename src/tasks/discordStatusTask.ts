@@ -1,5 +1,5 @@
-import { getShardsConnectionCount } from '@/api/getShardsConnectionCount';
-import { setShardConnectionCount } from '@/api/setShardConnectionCount';
+import { getShardsConnectionCount } from '@/api/shards/connectionCount';
+import { setShardConnectionCount } from '@/api/shards/shardConnectionCount';
 import { client, getShardId, getTotalGuildCount } from '@/services/discord';
 import { sleep } from '@/utils/utiles';
 import { ActivityType } from 'discord.js';

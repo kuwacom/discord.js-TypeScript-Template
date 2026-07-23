@@ -13,6 +13,7 @@ discord.js v14 と TypeScript を使って BOT を作るためのテンプレー
 - `zod` による環境変数バリデーション
 - `ShardingManager` を前提にした起動構成
 - 任意で使える簡易シャード同期 API
+- 外部 API 呼び出し用の汎用 `APIClient`（openapi-fetch + raw fetch の 2 経路・throw 方式のエラーハンドリング）
 
 ## 特徴
 
@@ -27,6 +28,7 @@ discord.js v14 と TypeScript を使って BOT を作るためのテンプレー
 - メモリ使用量デバッグタスク
 - `zod` による `.env` 検証
 - `ESLint` と `Prettier` によるコード品質管理
+- 外部 API 呼び出し用の汎用 `APIClient`（openapi-fetch + 生 fetch の 2 経路・タイムアウト・ヘッダーマスク・トークン認証対応）
 
 ## 動作要件
 
@@ -84,6 +86,7 @@ npm run typecheck
 | ---------------------- | -------------------------------------------- |
 | `npm run build`        | `tsc` と `tsc-alias` でビルド                |
 | `npm run typecheck`    | TypeScript の型チェックのみ実行              |
+| `npm run gen:api`      | `openapi.yaml` から TypeScript 型定義を生成  |
 | `npm run lint`         | ESLint でプロジェクト全体を検査              |
 | `npm run lint:fix`     | ESLint の自動修正を実行                      |
 | `npm run format`       | Prettier でプロジェクト全体を整形            |
@@ -111,10 +114,14 @@ npm run typecheck
 | [src/tasks](src/tasks)                                       | 定期実行タスク                                           |
 | [src/configs](src/configs)                                   | 設定値と起動引数                                         |
 | [src/schemas](src/schemas)                                   | `zod` スキーマ定義                                       |
-| [src/api](src/api)                                           | シャード同期 API のクライアント                          |
+| [src/api](src/api)                                           | 外部 API 呼び出し用クライアントとシャード同期 API クライアント |
+| [src/api/apiClient.ts](src/api/apiClient.ts)               | 汎用 API クライアント（openapi-fetch + 生 fetch の 2 経路） |
+| [src/api/shards](src/api/shards)                           | シャード同期 API の呼び出し関数群                         |
 | [src/routes](src/routes)                                     | シャード同期 API のルーティング                          |
+| [src/lib](src/lib)                                          | 共通ライブラリ（API エラー定義など）                      |
 | [src/models/api](src/models/api)                             | API の型モデル                                           |
 | [src/types](src/types)                                       | アプリ内部で使う型定義                                   |
+| [src/types/generated](src/types/generated)                   | `openapi-typescript` が自動生成する OpenAPI 型定義       |
 | [src/format](src/format)                                     | エラー文言などの整形                                     |
 | [src/utils](src/utils)                                       | 補助関数                                                 |
 | [eslint.config.cjs](eslint.config.cjs)                       | ESLint flat config                                       |
@@ -187,6 +194,148 @@ npm run typecheck
 
 - `index.ts`
 - `executeInteraction.ts`
+
+## 外部 API を呼ぶ
+
+このテンプレートには外部 API を呼ぶための汎用クライアント [src/api/apiClient.ts](src/api/apiClient.ts) が含まれています
+`APIClient` は **2 つのリクエスト経路** を持っています
+
+| メソッド群 | 内部実装 | 用途 |
+| --- | --- | --- |
+| `get` / `post` / `put` / `delete` / `patch` | `openapi-fetch` | OpenAPI 定義にあるパス（型安全）|
+| `getUrl` / `postUrl` / `putUrl` / `deleteUrl` / `patchUrl` | 生 `fetch` | OpenAPI 定義にない外部 API |
+
+両経路ともタイムアウト・認証ヘッダー・エラーハンドリングは共通です
+
+### 基本的な使い方
+
+```typescript
+import { APIClient } from '@/api/apiClient';
+
+const client = new APIClient({
+  baseUrl: 'https://api.example.com/v1',
+  timeout: 10000, // デフォルト 5000ms
+});
+
+// 認証トークンが必要な場合
+client.setUserToken('your-token');
+
+// OpenAPI 定義にあるパス（型安全）
+const data = await client.get<ResponseType>('/resource');
+const created = await client.post<ResponseType, BodyType>('/resource', {
+  name: 'example',
+});
+```
+
+### OpenAPI 定義にない外部 API を叩く場合
+
+`getUrl` / `postUrl` 等のメソッドは絶対 URL を受け取り、生 fetch でリクエストします
+OpenAPI 定義への追記が難しいサードパーティ API 向けです
+
+```typescript
+// OpenAPI 定義にない外部 API（絶対 URL を指定）
+const data = await client.getUrl<ResponseType>('https://api.thirdparty.com/v1/resource');
+
+const created = await client.postUrl<ResponseType, BodyType>(
+  'https://api.thirdparty.com/v1/resource',
+  { name: 'example' },
+);
+```
+
+### エラーハンドリング
+
+API エラーは `ApiResultError` として throw されます  
+呼び出し元で try/catch して処理します
+
+```typescript
+import { isApiResultError } from '@lib/apiError';
+
+try {
+  const data = await client.get<ResponseType>('/resource');
+} catch (error) {
+  if (isApiResultError(error)) {
+    // API が返したエラー（HTTP ステータス・ErrorCode 付き）
+    logger.error(`${error.status} ${error.code}: ${error.message}`);
+  } else {
+    // ネットワークエラーやタイムアウト等
+    logger.error('Network error', error);
+  }
+}
+```
+
+`ApiResultError` は以下のプロパティを持ちます
+
+| プロパティ | 型                       | 説明                                       |
+| ---------- | ------------------------ | ------------------------------------------ |
+| `status`   | `number`                 | HTTP ステータスコード                      |
+| `code`     | `ErrorCode`              | API 共通エラーコード                       |
+| `message`  | `string`                 | エラーメッセージ                           |
+| `details`  | `ValidationErrorDetails` | バリデーションエラー時のみ詳細情報         |
+
+### 対応している ErrorCode
+
+| code                   | 想定 HTTP ステータス |
+| ---------------------- | -------------------- |
+| `BAD_REQUEST`          | 400                  |
+| `VALIDATION_ERROR`     | 400                  |
+| `UNAUTHORIZED`         | 401                  |
+| `FORBIDDEN`            | 403                  |
+| `NOT_FOUND`            | 404                  |
+| `CONFLICT`             | 409                  |
+| `TOO_MANY_REQUESTS`    | 429                  |
+| `BAD_GATEWAY`          | 502                  |
+| `INTERNAL_SERVER_ERROR`| 500                  |
+
+### 認証ヘッダー
+
+`APIClient` は以下の認証方式をサポートしています
+
+| 方式               | 設定方法                          | ヘッダー                |
+| ------------------ | --------------------------------- | ----------------------- |
+| Bearer トークン    | `client.setUserToken(token)`      | `Authorization: Bearer` |
+| 内部サービス間通信 | コンストラクタの `internalToken`  | `X-Internal-Token`      |
+
+両方を同時に使うことも可能です
+
+### ログ出力とセンシティブヘッダー
+
+リクエスト時にヘッダー内容をログ出力しますが、以下のヘッダーは自動的に `[REDACTED]` 化されます
+
+- `Authorization`
+- `Cookie`
+- `Set-Cookie`
+- `X-API-Key`
+- `X-Internal-Token`
+
+### リクエストボディの Content-Type
+
+デフォルトは `application/json` ですが、`Content-Type` ヘッダーを指定することで他の形式も使えます
+
+```typescript
+// URLエンコードフォーム
+await client.post('/token', body, {
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+});
+
+// multipart/form-data
+await client.post('/upload', body, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
+```
+
+## 外部 API を OpenAPI で管理する
+
+このテンプレートでは [openapi.yaml](openapi.yaml) から TypeScript 型定義を生成し、[src/api/apiClient.ts](src/api/apiClient.ts) の `get` / `post` 等のメソッドが `openapi-fetch` を使ってその型に基づいたリクエストを行います
+OpenAPI 定義にない外部 API は `getUrl` / `postUrl` 等のメソッドで生 fetch 経由で呼べます
+
+### openapi-typescript の peer dependency 注意点
+
+`openapi-typescript@7.x` は TypeScript 5.x を peer dependency として要求しますが、このテンプレートは TypeScript 6.x を使用しています  
+インストール時に peer dependency 警告が出ますが、`--legacy-peer-deps` 付きでインストールすれば問題なく動作します
+
+```bash
+npm install -D openapi-typescript --legacy-peer-deps
+```
 
 ## 実装上の補足
 

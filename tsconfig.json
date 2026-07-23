@@ -19,7 +19,8 @@
       "@format/*": ["./src/format/*"],
       "@routes/*": ["./src/routes/*"],
       "@middlewares/*": ["./src/middlewares/*"],
-      "@services/*": ["./src/services/*"]
+      "@services/*": ["./src/services/*"],
+      "@lib/*": ["./src/lib/*"]
     },
     "resolveJsonModule": true,
     "declaration": true,
